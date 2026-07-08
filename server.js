@@ -18,6 +18,31 @@ admin.initializeApp({
 
 const db = admin.database();
 
+// ==========================
+// OUVIR ALTERAÇÕES
+// ==========================
+
+console.log("Escutando pedidos...");
+
+db.ref("senhas").on("child_changed", (snapshot) => {
+
+    const numero = snapshot.key;
+    const pedido = snapshot.val();
+
+    console.log("Alteração:", numero, pedido.status);
+
+    if (pedido.status === "pronto") {
+
+        console.log(`🔔 Senha ${numero} ficou pronta!`);
+
+    }
+
+});
+
+// ==========================
+// SERVIDOR
+// ==========================
+
 app.get("/", (req, res) => {
     res.send("Servidor Push Online 🚀");
 });
