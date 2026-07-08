@@ -1,1 +1,13 @@
-
+{
+  "name": "pub-push-server",
+  "version": "1.0.0",
+  "description": "Servidor Push para o sistema de pedidos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "firebase-admin": "^13.4.0"
+  }
+}
