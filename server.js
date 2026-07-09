@@ -33,10 +33,6 @@ const pedidosEnviados = new Set();
 // ENVIAR PUSH
 // =====================================
 
-// =====================================
-// ENVIAR PUSH
-// =====================================
-
 async function enviarPush(numero){
 
     try{
@@ -68,28 +64,23 @@ async function enviarPush(numero){
 
                 token: cliente.token,
 
+                // 🔥 1. AQUI MUDAMOS O TEXTO DA MENSAGEM E REMOVEMOS O EMOJI
                 notification:{
-
-                    title:"🍔 Pedido pronto!",
-
-                    body:`Sua senha ${numero} já pode ser retirada.`
-
+                    title: "Pedido pronto!",
+                    body: `Senha ${numero} retire seu pedido`
                 },
 
                 webpush:{
-
                     notification:{
-
-                        requireInteraction:true,
-
-                        vibrate:[500,300,500,300],
-
-                        icon:"https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
-
-                        badge:"https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
-
+                        requireInteraction: true,
+                        vibrate: [500, 300, 500, 300],
+                        icon: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+                        badge: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
+                    },
+                    // 🔥 2. AQUI ADICIONAMOS A AÇÃO DE ABRIR O SITE AO CLICAR
+                    fcmOptions: {
+                        link: "https://notpushkaos.netlify.app" // <-- TROQUE POR SUA URL AQUI
                     }
-
                 }
 
             };
