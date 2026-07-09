@@ -3,18 +3,7 @@ const admin = require("firebase-admin");
 
 const app = express();
 
-// ==========================
-// FIREBASE ADMIN
-// ==========================
-
-const serviceAccount = JSON.parse(
-    process.env.FIREBASE_SERVICE_ACCOUNT
-);
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://siteband-default-rtdb.firebaseio.com"
-});
+// Firebase Admin...
 
 const db = admin.database();
 
@@ -35,9 +24,71 @@ db.ref("senhas").on("child_changed", (snapshot) => {
 
         console.log(`🔔 Senha ${numero} ficou pronta!`);
 
+        enviarPush(numero);
+
     }
 
 });
+
+
+// ==========================
+// ENVIAR PUSH
+// ==========================
+
+async function enviarPush(numero){
+
+    try{
+
+        const snapshot = await db.ref("clientes").once("value");
+        const clientes = snapshot.val();
+
+        if(!clientes){
+            console.log("Nenhum cliente encontrado.");
+            return;
+        }
+
+        for(const id in clientes){
+
+            const cliente = clientes[id];
+
+            if(String(cliente.senha) === String(numero)){
+
+                console.log("Enviando push...");
+
+                await admin.messaging().send({
+
+                    token: cliente.token,
+
+                    notification:{
+                        title:"🍔 Pedido pronto!",
+                        body:`Sua senha ${numero} já pode ser retirada.`
+                    },
+
+                    webpush:{
+                        notification:{
+                            icon:"https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+                            badge:"https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+                            requireInteraction:true,
+                            vibrate:[500,300,500,300]
+                        }
+                    }
+
+                });
+
+                console.log("✅ Push enviado!");
+
+            }
+
+        }
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
+
 
 // ==========================
 // SERVIDOR
