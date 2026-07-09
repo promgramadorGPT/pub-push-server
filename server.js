@@ -33,35 +33,36 @@ const pedidosEnviados = new Set();
 // ENVIAR PUSH
 // =====================================
 
+// =====================================
+// ENVIAR PUSH
+// =====================================
+
 async function enviarPush(numero){
 
     try{
 
-        console.log("Procurando cliente da senha:", numero);
+        console.log(`🔍 Procurando cliente da senha: ${numero}`);
 
-        const snapshot = await db.ref("clientes").get();
+        // Busca Inteligente: Traz do banco APENAS o nó que possui a senha exata
+        const snapshot = await db.ref("clientes")
+                                 .orderByChild("senha")
+                                 .equalTo(String(numero))
+                                 .once("value");
 
+        // Se o banco retornar vazio, encerra a função avisando no log
         if(!snapshot.exists()){
-
-            console.log("Nenhum cliente encontrado.");
-
+            console.log(`❌ Nenhum cliente encontrado com a senha ${numero}. O token não está vinculado a este pedido.`);
             return;
-
         }
 
         const clientes = snapshot.val();
 
+        // Como a busca foi otimizada, o loop só passa pelos donos reais da senha
         for(const id in clientes){
 
             const cliente = clientes[id];
 
-            if(String(cliente.senha) !== String(numero)){
-
-                continue;
-
-            }
-
-            console.log("Cliente localizado.");
+            console.log(`✅ Cliente localizado para a senha ${numero}. Disparando push...`);
 
             const mensagem = {
 
@@ -95,15 +96,14 @@ async function enviarPush(numero){
 
             await admin.messaging().send(mensagem);
 
-            console.log("✅ Push enviado para senha",numero);
+            console.log(`🚀 Push disparado com sucesso para o celular do pedido ${numero}`);
 
         }
 
     }
-
     catch(e){
 
-        console.error("Erro Push:",e);
+        console.error("🚨 Erro Push:", e);
 
     }
 
