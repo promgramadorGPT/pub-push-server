@@ -79,7 +79,7 @@ async function enviarPush(numero){
                     },
                     // 🔥 2. AQUI ADICIONAMOS A AÇÃO DE ABRIR O SITE AO CLICAR
                     fcmOptions: {
-                        link: "https://notpushkaos.netlify.app" // <-- TROQUE POR SUA URL AQUI
+                        link: "https://kaospubsenha.netlify.app/senha/" // <-- TROQUE POR SUA URL AQUI
                     }
                 }
 
