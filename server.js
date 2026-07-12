@@ -70,16 +70,17 @@ async function enviarPush(numero){
                     body: `Senha ${numero} retire seu pedido`
                 },
 
-                webpush:{
+                                webpush:{
                     notification:{
                         requireInteraction: true,
                         vibrate: [500, 300, 500, 300],
-                        icon: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
-                        badge: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
+                        // 🔥 1. AQUI VOCÊ COLOCA O LOGOTIPO DO TICKET DO PUB
+                        icon: "https://kaospub2.netlify.app/senha/icon-192.png",
+                        badge: "https://kaospub2.netlify.app/senha/icon-192.png"
                     },
                     // 🔥 2. AQUI ADICIONAMOS A AÇÃO DE ABRIR O SITE AO CLICAR
                     fcmOptions: {
-                        link: "https://kaospubsenha.netlify.app/senha/" // <-- TROQUE POR SUA URL AQUI
+                        link: "https://kaospub2.netlify.app/senha/" // <-- TROQUE POR SUA URL AQUI
                     }
                 }
 
