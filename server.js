@@ -74,8 +74,8 @@ async function enviarPush(numero){
                     notification:{
                         requireInteraction: true,
                         vibrate: [500, 300, 500, 300],
-                        icon: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
-                        badge: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
+                        icon: "https://img.icons8.com/?size=100&id=sHpfQi5gIqNi&format=png&color=000000",
+                        badge: "https://img.icons8.com/?size=100&id=sHpfQi5gIqNi&format=png&color=000000"
                     },
                     // 🔥 2. AQUI ADICIONAMOS A AÇÃO DE ABRIR O SITE AO CLICAR
                     fcmOptions: {
